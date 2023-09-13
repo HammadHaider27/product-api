@@ -7,7 +7,6 @@ import Album from "../components/productList"
 
 const Auth = () => {
 
-
   return (
     <div>
         <Product />

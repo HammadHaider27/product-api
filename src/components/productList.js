@@ -15,7 +15,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useSelector, useDispatch } from "react-redux";
+import "../App.css";
+import { addToCart } from "../store/productSlice";
+import CartStore from "./cartStore";
+import { useState } from "react";
 
 function Copyright() {
   return (
@@ -38,9 +43,15 @@ export default function Album() {
 
   const dispatch = useDispatch();
 
-  const addToCart = (value) => {
-    dispatch();
-    console("value id", value.id)
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const handleCartClick = () => {
+    setCartOpen(!cartOpen);
+  };
+
+  const addToStore = (value) => {
+    dispatch(addToCart(value.id));
+    console.log("value id", value.id);
   };
 
   return (
@@ -52,6 +63,13 @@ export default function Album() {
           <Typography variant="h6" color="inherit" noWrap>
             The Shopping Feast
           </Typography>
+          <ShoppingCartIcon className="icon" onClick={handleCartClick} />
+          {cartOpen && (
+            <div className="cart">
+              Quantity  
+              {/* This is the empty div that opens when cart icon is clicked */}
+            </div>
+          )}
         </Toolbar>
       </AppBar>
       <main>
@@ -112,7 +130,7 @@ export default function Album() {
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button size="small" onClick={() => addToCart(value)}>
+                      <Button size="small" onClick={() => addToStore(value)}>
                         Add to Cart
                       </Button>
                     </CardActions>
