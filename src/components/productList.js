@@ -15,12 +15,13 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useSelector, useDispatch } from "react-redux";
 import "../App.css";
 import { addToCart } from "../store/productSlice";
-import CartStore from "./cartStore";
 import { useState } from "react";
+import BasicModal from "./Modal";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 function Copyright() {
   return (
@@ -43,14 +44,26 @@ export default function Album() {
 
   const dispatch = useDispatch();
 
-  const [cartOpen, setCartOpen] = useState(false);
+  const [count, setCount] = useState(0);
 
-  const handleCartClick = () => {
-    setCartOpen(!cartOpen);
+  const handleClickAdd = () => {
+    setCount(count + 1);
+  };
+  const handleClickSub = () => {
+    if (count > 0) {
+      setCount(count - 1);
+    }
   };
 
   const addToStore = (value) => {
-    dispatch(addToCart(value.id));
+    dispatch(
+      addToCart({
+        id: value.id,
+        title: value.title,
+        price: value.price,
+        count: count,
+      })
+    );
     console.log("value id", value.id);
   };
 
@@ -63,13 +76,7 @@ export default function Album() {
           <Typography variant="h6" color="inherit" noWrap>
             The Shopping Feast
           </Typography>
-          <ShoppingCartIcon className="icon" onClick={handleCartClick} />
-          {cartOpen && (
-            <div className="cart">
-              Quantity  
-              {/* This is the empty div that opens when cart icon is clicked */}
-            </div>
-          )}
+          <BasicModal />
         </Toolbar>
       </AppBar>
       <main>
@@ -127,6 +134,23 @@ export default function Album() {
                       </Typography>
                       <Typography>
                         <b>Brand:</b> {value.brand}
+                      </Typography>
+                      <Typography>
+                        <div>
+                          Quantity:
+                          <span className="quantity">
+                            <RemoveIcon
+                              onClick={handleClickSub}
+                              className="icon1"
+                            />
+                            {/* ---------------------------Count Value----------------------------------- */}
+                            {count}
+                            <AddIcon
+                              onClick={handleClickAdd}
+                              className="icon1"
+                            />
+                          </span>
+                        </div>
                       </Typography>
                     </CardContent>
                     <CardActions>

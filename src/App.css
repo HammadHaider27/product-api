@@ -1,11 +1,23 @@
 .icon {
-    position: relative;
-    position: absolute;
-    left: 450px;
+    /* position: relative !important; */
+    position: absolute !important;
+    left: 450px !important;
+    bottom: 12px;
+    color: white !important;
 }
 
 .cart {
     width: 300px;
     height: 400px;
     background-color: red;
+}
+
+.quantity {
+    margin-left: -30px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.icon1 {
+    background-color: bisque;
 }
