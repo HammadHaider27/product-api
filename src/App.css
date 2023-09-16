@@ -18,6 +18,20 @@
     justify-content: space-evenly;
 }
 
+.cart-container {
+    padding: 20px;
+}
+.cart-container-total {
+    padding-left: 20px;
+}
 .icon1 {
     background-color: bisque;
+}
+
+.modal-image {
+    position: absolute;
+    left: 200px;
+    bottom: 5 0px;
+    /* width: 100px;
+    height: 100px; */
 }

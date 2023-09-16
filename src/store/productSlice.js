@@ -16,9 +16,17 @@ const productSlice = createSlice({
       return state.filter((product) => product.id !== action.payload.id);
     },
     addToCart: (state, action) => {
-      const productId = action.payload;
-      state.cart.push(productId);
-      console.log("state cart", productId);
+      const productId = action.payload.id;
+      const existingProduct = state.cart.find(
+        (product) => product.id === productId
+      );
+
+      if (existingProduct) {
+        existingProduct.count += action.payload.count;
+      } else {
+        state.cart.push(action.payload);
+      }
+      console.log("state cart", existingProduct);
     },
   },
 });

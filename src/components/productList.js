@@ -19,9 +19,9 @@ import { useSelector, useDispatch } from "react-redux";
 import "../App.css";
 import { addToCart } from "../store/productSlice";
 import { useState } from "react";
-import BasicModal from "./Modal";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import Swal from "sweetalert2";
 
 function Copyright() {
   return (
@@ -56,29 +56,33 @@ export default function Album() {
   };
 
   const addToStore = (value) => {
-    dispatch(
-      addToCart({
-        id: value.id,
-        title: value.title,
-        price: value.price,
-        count: count,
-      })
-    );
+    {
+      count == 0
+        ? Swal.fire({
+            imageUrl: "https://i.imgflip.com/3rm5rv.png?a470736",
+            imageHeight: 200,
+            imageAlt: "A tall image",
+            title: "Oops...",
+            text: "Please Insert The Quantity First!",
+          })
+        : dispatch(
+            addToCart({
+              id: value.id,
+              title: value.title,
+              price: value.price,
+              count: count,
+              image: value.images[0],
+            })
+          );
+
+      setCount(0);
+    }
     console.log("value id", value.id);
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <CameraIcon sx={{ mr: 2 }} />
-          <Typography variant="h6" color="inherit" noWrap>
-            The Shopping Feast
-          </Typography>
-          <BasicModal />
-        </Toolbar>
-      </AppBar>
       <main>
         {/* Hero unit */}
         <Box

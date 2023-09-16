@@ -11,10 +11,10 @@ const Product = () => {
     api
       .get("/products")
       .then((res) => {
-        console.log("response", res);
+        // console.log("response", res);
         if (res.status == "200") {
           dispatch(addProduct(res.data.products));
-          console.log("response data", res.data.products);
+          // console.log("response data", res.data.products);
         }
       })
       .catch((err) => {
