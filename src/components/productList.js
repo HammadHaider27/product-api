@@ -19,9 +19,8 @@ import { useSelector, useDispatch } from "react-redux";
 import "../App.css";
 import { addToCart } from "../store/productSlice";
 import { useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import Swal from "sweetalert2";
+import Counter from "./Counter";
 
 function Copyright() {
   return (
@@ -44,20 +43,15 @@ export default function Album() {
 
   const dispatch = useDispatch();
 
-  const [count, setCount] = useState(0);
+  const [parentCount, setParentCount] = useState(0);
 
-  const handleClickAdd = () => {
-    setCount(count + 1);
-  };
-  const handleClickSub = () => {
-    if (count > 0) {
-      setCount(count - 1);
-    }
+  const handleChildStateChange = (childCount) => {
+    setParentCount(childCount);
   };
 
   const addToStore = (value) => {
     {
-      count == 0
+      parentCount == 0
         ? Swal.fire({
             imageUrl: "https://i.imgflip.com/3rm5rv.png?a470736",
             imageHeight: 200,
@@ -70,12 +64,10 @@ export default function Album() {
               id: value.id,
               title: value.title,
               price: value.price,
-              count: count,
+              count: parentCount,
               image: value.images[0],
             })
           );
-
-      setCount(0);
     }
     console.log("value id", value.id);
   };
@@ -140,21 +132,7 @@ export default function Album() {
                         <b>Brand:</b> {value.brand}
                       </Typography>
                       <Typography>
-                        <div>
-                          Quantity:
-                          <span className="quantity">
-                            <RemoveIcon
-                              onClick={handleClickSub}
-                              className="icon1"
-                            />
-                            {/* ---------------------------Count Value----------------------------------- */}
-                            {count}
-                            <AddIcon
-                              onClick={handleClickAdd}
-                              className="icon1"
-                            />
-                          </span>
-                        </div>
+                        <Counter onStateChange={handleChildStateChange} />  
                       </Typography>
                     </CardContent>
                     <CardActions>

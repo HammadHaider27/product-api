@@ -35,3 +35,9 @@
     /* width: 100px;
     height: 100px; */
 }
+.close-icon {
+    position: absolute;
+    left: 280px;
+    color: red;
+    cursor: pointer;
+}

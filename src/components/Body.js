@@ -17,6 +17,9 @@ import Album from "./productList";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useSelector, useDispatch } from "react-redux";
 import "../App.css";
+import CloseIcon from "@mui/icons-material/Close";
+import { removeProduct } from "../store/productSlice";
+import CustomizedBadges from "./Badge"
 
 const drawerWidth = 350;
 
@@ -69,6 +72,8 @@ export default function PersistentDrawerRight() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  const dispatch = useDispatch();
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -78,10 +83,16 @@ export default function PersistentDrawerRight() {
   };
 
   const productDetail = useSelector((state) => state.product.cart);
-//   console.log("productDetail", productDetail);
+  console.log("productDetail", productDetail);
 
   const totalAmount = (val) => {
     return val.count * val.price;
+  };
+
+  var FinaltotalAmount = 0;
+
+  const cancelAddItem = (val) => {
+     dispatch(removeProduct(val));
   };
 
   return (
@@ -99,7 +110,7 @@ export default function PersistentDrawerRight() {
             onClick={handleDrawerOpen}
             sx={{ ...(open && { display: "none" }) }}
           >
-            <ShoppingCartIcon />
+            <CustomizedBadges />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -138,21 +149,24 @@ export default function PersistentDrawerRight() {
         {/* <BasicModal /> */}
         <List>
           {productDetail.map((val) => {
+                FinaltotalAmount += (totalAmount(val));
             return (
               <div className="cart-container">
+                <CloseIcon
+                  onClick={() => cancelAddItem(val)}
+                  className="close-icon"
+                />
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                   <b>{val.title}</b>
                 </Typography>
                 <CardMedia
                   className="modal-image"
                   component="div"
-                  sx={
-                    {
-                      // 1:1
-                      width: "100px",
-                      height: "100px",
-                    }
-                  }
+                  sx={{
+                    // 1:1
+                    width: "100px",
+                    height: "100px",
+                  }}
                   image={val.image}
                 />
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -162,14 +176,14 @@ export default function PersistentDrawerRight() {
                   1 x price: {val.price}
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  Total: {val.count} x {val.price} = Rs. {totalAmount(val)}
+                  Total: {val.count} x {val.price} = {totalAmount(val)} $
                 </Typography>
                 <Divider />
               </div>
             );
           })}
           <List className="cart-container">
-            <b>Total Amount:</b> {totalAmount}
+            <b>Total Amount:</b> {FinaltotalAmount} $
           </List>
         </List>
       </Drawer>

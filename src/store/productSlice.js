@@ -13,7 +13,25 @@ const productSlice = createSlice({
       state.product = action.payload;
     },
     removeProduct: (state, action) => {
-      return state.filter((product) => product.id !== action.payload.id);
+      const productId = action.payload.id;
+      const productIndex = state.product.findIndex(
+        (product) => product.id === productId
+      );
+      if (productIndex !== -1) {
+        state.product.splice(productIndex, 1);
+      }
+      const cartIndex = state.cart.findIndex(
+        (product) => product.id === productId
+      );
+      if (cartIndex !== -1) {
+        state.cart.splice(cartIndex, 1);
+      }
+      // state.product = state.product.filter(
+      //   (product) => product.id !== productId
+      // );
+      // state.cart = state.cart.filter((product) => product.id !== productId);
+
+      // state.cart.splice(action.payload, 1);
     },
     addToCart: (state, action) => {
       const productId = action.payload.id;
