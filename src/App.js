@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import Auth from "../src/screens/index";
 
@@ -10,4 +11,3 @@ function App() {
 }
 
 export default App;
-

@@ -9,19 +9,18 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CardMedia from "@mui/material/CardMedia";
 import Album from "./productList";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useSelector, useDispatch } from "react-redux";
 import "../App.css";
 import CloseIcon from "@mui/icons-material/Close";
 import { removeProduct } from "../store/productSlice";
-import CustomizedBadges from "./Badge"
+import CustomizedBadges from "./Badge";
+import ResponsiveAppBar from "./Navbar";
 
-const drawerWidth = 350;
+const drawerWidth = 320;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -92,27 +91,28 @@ export default function PersistentDrawerRight() {
   var FinaltotalAmount = 0;
 
   const cancelAddItem = (val) => {
-     dispatch(removeProduct(val));
+    dispatch(removeProduct(val));
   };
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
+        {/* <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
             The Shopping Feast
-          </Typography>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerOpen}
-            sx={{ ...(open && { display: "none" }) }}
-          >
-            <CustomizedBadges />
-          </IconButton>
-        </Toolbar>
+          </Typography> */}
+
+        <ResponsiveAppBar />
+
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="end"
+          onClick={handleDrawerOpen}
+          sx={{ ...(open && { display: "none" }) }}
+        >
+          <CustomizedBadges />
+        </IconButton>
       </AppBar>
       <Main open={open}>
         <DrawerHeader />
@@ -149,7 +149,7 @@ export default function PersistentDrawerRight() {
         {/* <BasicModal /> */}
         <List>
           {productDetail.map((val) => {
-                FinaltotalAmount += (totalAmount(val));
+            FinaltotalAmount += totalAmount(val);
             return (
               <div className="cart-container">
                 <CloseIcon
@@ -182,7 +182,7 @@ export default function PersistentDrawerRight() {
               </div>
             );
           })}
-          <List className="cart-container">
+          <List className="cart-container" position="fixed">
             <b>Total Amount:</b> {FinaltotalAmount} $
           </List>
         </List>

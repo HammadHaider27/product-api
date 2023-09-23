@@ -10,7 +10,7 @@ const Counter = ({onStateChange}) => {
 
   const handleClickAdd = () => {
     setCount(count + 1);
-    onStateChange(count + 1)
+    onStateChange(count + 1);
   };
   const handleClickSub = () => {
     if (count > 0) {

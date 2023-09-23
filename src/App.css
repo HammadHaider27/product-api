@@ -26,6 +26,7 @@
 }
 .icon1 {
     background-color: bisque;
+    cursor: pointer;
 }
 
 .modal-image {
@@ -40,4 +41,13 @@
     left: 280px;
     color: red;
     cursor: pointer;
+}
+
+.link {
+    text-decoration: none;
+    color: white;
+}
+.link:hover {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
 }
