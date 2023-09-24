@@ -12,15 +12,18 @@ import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CardMedia from "@mui/material/CardMedia";
+import { Button } from "@mui/material";
 import Album from "./productList";
 import { useSelector, useDispatch } from "react-redux";
 import "../App.css";
 import CloseIcon from "@mui/icons-material/Close";
-import { removeProduct } from "../store/productSlice";
+import { confirmOrder, removeProduct } from "../store/productSlice";
 import CustomizedBadges from "./Badge";
 import ResponsiveAppBar from "./Navbar";
+import {api} from "../api"
 
 const drawerWidth = 320;
+const leftDrawerWidth = 220;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -94,10 +97,29 @@ export default function PersistentDrawerRight() {
     dispatch(removeProduct(val));
   };
 
+  const confirmOrder = () => {
+    // api
+    //   .get("/carts")
+    //   .then((res) => {
+    //     console.log("response", res);
+    //     if (res.status == "200") {
+    //       dispatch(confirmOrder(res.data.carts));
+    //       console.log("response data", res.data.carts);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log("err", err);
+    //   })
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar
+        position="fixed"
+        open={open}
+        sx={{ width: `${leftDrawerWidth}px)`, ml: `${leftDrawerWidth}px` }}
+      >
         {/* <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
             The Shopping Feast
           </Typography> */}
@@ -114,6 +136,25 @@ export default function PersistentDrawerRight() {
           <CustomizedBadges />
         </IconButton>
       </AppBar>
+      {/* -------------------Left SideDrawer------------------- */}
+      <Drawer
+        sx={{
+          width: leftDrawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: leftDrawerWidth,
+            boxSizing: "border-box",
+            marginTop: "70px",
+          },
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+        <Divider />
+        <Toolbar />
+        <List></List>
+      </Drawer>
+      {/* -----------------------End-------------------------- */}
       <Main open={open}>
         <DrawerHeader />
         <Typography paragraph>
@@ -121,7 +162,7 @@ export default function PersistentDrawerRight() {
         </Typography>
       </Main>
 
-      {/* ---------------------Side Bar----------------------- */}
+      {/* ---------------------Side Bar Right----------------------- */}
 
       <Drawer
         sx={{
@@ -184,6 +225,11 @@ export default function PersistentDrawerRight() {
           })}
           <List className="cart-container" position="fixed">
             <b>Total Amount:</b> {FinaltotalAmount} $
+          </List>
+          <List className="order-btn" position="fixed">
+            <Button onClick={confirmOrder()} variant="contained" size="large">
+              confirm order
+            </Button>
           </List>
         </List>
       </Drawer>

@@ -66,7 +66,8 @@ export default function Album() {
               count: parentCount,
               image: value.images[0],
             })
-          );
+            );
+            setParentCount(0);
     }
     console.log("value id", value.id);
   };

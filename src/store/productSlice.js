@@ -3,12 +3,23 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   product: [],
   cart: [],
+  isAuthenticated: false,
+  user: null,
 };
 
 const productSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    signInSuccess: (state, action) => {
+      state.isAuthenticated = true;
+      console.log("signIn",state )
+      state.user = action.payload; 
+    },
+    signOut: (state) => {
+      state.isAuthenticated = false;
+      state.user = null;
+    },
     addProduct: (state, action) => {
       state.product = action.payload;
     },
@@ -46,8 +57,24 @@ const productSlice = createSlice({
       }
       console.log("state cart", existingProduct);
     },
+    confirmOrder: (state, action) => {
+      state.cart = action.payload;
+      const orderId = action.payload.id;
+
+      // Find the order in the cart
+      const orderIndex = state.cart.findIndex((order) => order.id === orderId);
+
+      if (orderIndex !== -1) {
+        // Remove the order from the cart
+        const confirmedOrder = state.cart.splice(orderIndex, 1)[0];
+
+        // Add the order to the list of confirmed orders
+        state.orders.push(confirmedOrder);
+      }
+    },
   },
 });
 
-export const { addProduct, removeProduct, addToCart } = productSlice.actions;
+export const { addProduct, removeProduct, addToCart, confirmOrder, signInSuccess, signOut } =
+  productSlice.actions;
 export default productSlice.reducer;

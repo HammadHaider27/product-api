@@ -1,8 +1,9 @@
 import React from 'react'
+import PermanentDrawerLeft from "../SideBar"
 
 function Home() {
   return (
-    <div>Home</div>
+    <PermanentDrawerLeft />
   )
 }
 
