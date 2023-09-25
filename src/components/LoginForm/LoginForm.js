@@ -18,13 +18,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { api } from "../../api";
 import { signInSuccess } from "../../store/productSlice";
 
-export default function LoginForm() {
-  const initialValues = {
-    email: "kminchelle@qq.com",
-    password: "0lelplR",
-  };
-  const defaultTheme = createTheme();
+const defaultTheme = createTheme();
 
+const initialValues = {
+  username: "kminchelle",
+  password: "0lelplR",
+};
+
+export default function LoginForm({setIsLoading}) {
   const dispatch = useDispatch();
 
   const { values, errors, handleBlur, handleChange, handleSubmit } = useFormik({
@@ -32,22 +33,24 @@ export default function LoginForm() {
     validationSchema: signInSchema,
 
     onSubmit: (values, action) => {
-      api
+      // setIsLoading(true)
+       api
         .post("/auth/login", {
-          username: "kminchelle",
-          password: "0lelplR",
+          username: values.username,
+          password: values.password,
         })
         .then((res) => {
           if (res.status == "200") {
             console.log("login user data", res.data);
-            dispatch(signInSuccess(values));
+            dispatch(signInSuccess(res.data));
           } else {
             console.log("login error user data", res.data);
           }
         })
         .catch((err) => {
           console.log("login error catch", err);
-        });
+        })
+        // setIsLoading(false)
 
       console.log("values", values);
       action.resetForm();
@@ -81,22 +84,20 @@ export default function LoginForm() {
           >
             <TextField
               margin="normal"
-              required
               fullWidth
-              label="Email Address"
+              label="UserName"
               autoFocus
-              type="email"
+              type="text"
               autoComplete="off"
-              name="email"
-              id="email"
-              value={values.email}
+              name="username"
+              id="username"
+              value={values.username}
               onChange={handleChange}
               onBlur={handleBlur}
             />
 
             <TextField
               margin="normal"
-              required
               fullWidth
               name="password"
               label="Password"

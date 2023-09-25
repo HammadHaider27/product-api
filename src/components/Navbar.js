@@ -16,12 +16,12 @@ import { Link } from "react-router-dom";
 import "../App.css";
 import { useSelector, useDispatch } from "react-redux";
 import { signOut } from "../store/productSlice";
-
+import CustomizedBadges from "./Badge";
 
 const pages = ["Home", "About", "Contact"];
 const settings = ["Logout"];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({open, handleDrawerOpen}) {
   const dispatch = useDispatch();
   const loginData = useSelector((state) => state.product.user);
   console.log(loginData);
@@ -42,8 +42,11 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-    dispatch(signOut());
   };
+
+  const Logout = () => {
+    dispatch(signOut());
+  }
 
   return (
     <AppBar position="static">
@@ -138,7 +141,16 @@ function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="end"
+                onClick={handleDrawerOpen}
+                sx={{ ...(open && { display: "none" }), marginRight: 5 }}
+              >
+                <CustomizedBadges />
+              </IconButton>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                   alt="Remy Sharp"
@@ -163,7 +175,7 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={Logout}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

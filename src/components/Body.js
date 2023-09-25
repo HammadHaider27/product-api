@@ -18,9 +18,8 @@ import { useSelector, useDispatch } from "react-redux";
 import "../App.css";
 import CloseIcon from "@mui/icons-material/Close";
 import { confirmOrder, removeProduct } from "../store/productSlice";
-import CustomizedBadges from "./Badge";
 import ResponsiveAppBar from "./Navbar";
-import {api} from "../api"
+import { api } from "../api";
 
 const drawerWidth = 320;
 const leftDrawerWidth = 220;
@@ -85,6 +84,7 @@ export default function PersistentDrawerRight() {
   };
 
   const productDetail = useSelector((state) => state.product.cart);
+  const userDetail = useSelector((state) => state.product.user);
   console.log("productDetail", productDetail);
 
   const totalAmount = (val) => {
@@ -97,20 +97,30 @@ export default function PersistentDrawerRight() {
     dispatch(removeProduct(val));
   };
 
+  // -------------------------------------Carts Api Fetching ---------------------------------
+
   const confirmOrder = () => {
-    // api
-    //   .get("/carts")
-    //   .then((res) => {
-    //     console.log("response", res);
-    //     if (res.status == "200") {
-    //       dispatch(confirmOrder(res.data.carts));
-    //       console.log("response data", res.data.carts);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log("err", err);
-    //   })
-  }
+    const modifiedProducts = productDetail.map((product) => ({
+      productId: product.id,
+      quantity: product.count,
+    }));
+
+     api
+      .post("/carts/add", {
+        userId: userDetail.id,
+        products: modifiedProducts,
+      })
+      .then((response) => {
+        console.log("response", response);
+        if (response.status == "200") {
+          dispatch(confirmOrder(response.data.carts));
+          console.log("response data", response.data.carts);
+        }
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -120,23 +130,14 @@ export default function PersistentDrawerRight() {
         open={open}
         sx={{ width: `${leftDrawerWidth}px)`, ml: `${leftDrawerWidth}px` }}
       >
-        {/* <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
-            The Shopping Feast
-          </Typography> */}
-
-        <ResponsiveAppBar />
-
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="end"
-          onClick={handleDrawerOpen}
-          sx={{ ...(open && { display: "none" }) }}
-        >
-          <CustomizedBadges />
-        </IconButton>
+        <ResponsiveAppBar
+          open={open}
+          setOpen={setOpen}
+          handleDrawerOpen={handleDrawerOpen}
+        />
       </AppBar>
-      {/* -------------------Left SideDrawer------------------- */}
+
+      {/* ---------------------------------Left SideDrawer----------------------------------- */}
       <Drawer
         sx={{
           width: leftDrawerWidth,
@@ -150,11 +151,12 @@ export default function PersistentDrawerRight() {
         variant="permanent"
         anchor="left"
       >
+        Confirm Orders
         <Divider />
         <Toolbar />
         <List></List>
       </Drawer>
-      {/* -----------------------End-------------------------- */}
+      {/* --------------------------------------End--- ------------------------------------- */}
       <Main open={open}>
         <DrawerHeader />
         <Typography paragraph>
@@ -162,7 +164,7 @@ export default function PersistentDrawerRight() {
         </Typography>
       </Main>
 
-      {/* ---------------------Side Bar Right----------------------- */}
+      {/* -------------------------------------Side Bar Right----------------------------------- */}
 
       <Drawer
         sx={{
@@ -227,7 +229,7 @@ export default function PersistentDrawerRight() {
             <b>Total Amount:</b> {FinaltotalAmount} $
           </List>
           <List className="order-btn" position="fixed">
-            <Button onClick={confirmOrder()} variant="contained" size="large">
+            <Button onClick={() => confirmOrder()} variant="contained" size="large">
               confirm order
             </Button>
           </List>
