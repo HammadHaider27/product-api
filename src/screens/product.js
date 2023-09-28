@@ -20,22 +20,7 @@ const Product = () => {
       .catch((err) => {
         console.log("err", err);
       });
-
-    // api
-    //   .post("/auth/login", {
-    //     username: "kminchelle",
-    //     password: "0lelplRa",
-    //   })
-    //   .then((res) => {
-    //     if (res.status == "200") {
-    //       console.log("login user data", res.data);
-    //     } else {
-    //       console.log("login error user data", res.data);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log("login error catch", err);
-    //   });
+      
   }, []);
 
   return <div className=""></div>;

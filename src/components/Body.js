@@ -20,6 +20,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { confirmOrder, removeProduct } from "../store/productSlice";
 import ResponsiveAppBar from "./Navbar";
 import { api } from "../api";
+import checkConfirmOrder from "./CheckConfirmOrders/CheckConfirmOrders";
+import Link from "@mui/material/Link";
+import { useNavigate, useNavigation } from "react-router-dom";
+
 
 const drawerWidth = 320;
 const leftDrawerWidth = 220;
@@ -83,9 +87,11 @@ export default function PersistentDrawerRight() {
     setOpen(false);
   };
 
+  const navigate = useNavigate()
   const productDetail = useSelector((state) => state.product.cart);
   const userDetail = useSelector((state) => state.product.user);
   console.log("productDetail", productDetail);
+  console.log("userDetail", userDetail);
 
   const totalAmount = (val) => {
     return val.count * val.price;
@@ -97,15 +103,34 @@ export default function PersistentDrawerRight() {
     dispatch(removeProduct(val));
   };
 
+  // const checkConfirmOrder = () => {
+  //   useEffect(() => {
+  //     api
+  //       .get("/carts/user/" + userDetail.id)
+  //       .then((res) => {
+  //         // console.log("response", res);
+  //         if (res.status == "200") {
+  //           dispatch(addProduct(res.data));
+  //           // console.log("response data", res.data);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log("err", err);
+  //       });
+  //   }, []);
+
+  //     <checkConfirmOrder />
+  // }
+
   // -------------------------------------Carts Api Fetching ---------------------------------
 
-  const confirmOrder = () => {
+  const confirmedOrder = () => {
     const modifiedProducts = productDetail.map((product) => ({
-      productId: product.id,
+      id: product.id,
       quantity: product.count,
     }));
 
-     api
+    api
       .post("/carts/add", {
         userId: userDetail.id,
         products: modifiedProducts,
@@ -113,8 +138,8 @@ export default function PersistentDrawerRight() {
       .then((response) => {
         console.log("response", response);
         if (response.status == "200") {
-          dispatch(confirmOrder(response.data.carts));
-          console.log("response data", response.data.carts);
+          dispatch(confirmOrder(response.data));
+          console.log("response data", response.data);
         }
       })
       .catch((err) => {
@@ -151,7 +176,15 @@ export default function PersistentDrawerRight() {
         variant="permanent"
         anchor="left"
       >
-        Confirm Orders
+
+      {/* ---------------------------------CheckConfirmOrders----------------------------------- */}
+        
+        {/* <Link to="/CheckConfirmOrders" > */}
+          <Button onClick={() => navigate('/CheckConfirmOrders')} variant="outlined" >
+            Confirm order
+          </Button>
+        {/* </Link> */}
+        
         <Divider />
         <Toolbar />
         <List></List>
@@ -229,7 +262,11 @@ export default function PersistentDrawerRight() {
             <b>Total Amount:</b> {FinaltotalAmount} $
           </List>
           <List className="order-btn" position="fixed">
-            <Button onClick={() => confirmOrder()} variant="contained" size="large">
+            <Button
+              onClick={() => confirmedOrder()}
+              variant="contained"
+              size="large"
+            >
               confirm order
             </Button>
           </List>

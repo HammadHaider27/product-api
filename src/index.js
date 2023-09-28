@@ -11,6 +11,7 @@ import ResponsiveAppBar from "./components/Navbar";
 import Home from "./components/Home/Home";
 import About from "./components/About/About";
 import Contact from "./components/Contact/Contact";
+import CheckConfirmOrders from "./components/CheckConfirmOrders/CheckConfirmOrders";
 import { Route, BrowserRouter } from "react-router-dom";
 import {
   RouterProvider,
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/Contact",
     element: <Contact />,
+  },
+  {
+    path: "/CheckConfirmOrders",
+    element: <CheckConfirmOrders />,
   },
 ]);
 

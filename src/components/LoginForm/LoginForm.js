@@ -50,7 +50,9 @@ export default function LoginForm({setIsLoading}) {
         .catch((err) => {
           console.log("login error catch", err);
         })
-        // setIsLoading(false)
+        .finally(() => {
+          // setIsLoading(false)
+        });
 
       console.log("values", values);
       action.resetForm();

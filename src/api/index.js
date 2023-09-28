@@ -5,3 +5,5 @@ export const api = axios.create({
 })
 
 // instance.defaults.headers.common['Authorization'] = AUTH_TOKEN ? AUTH_TOKEN : null
+
+// axios khud JSON.Stringify me convert kar deta ha
