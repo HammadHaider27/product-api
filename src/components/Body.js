@@ -20,10 +20,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import { confirmOrder, removeProduct } from "../store/productSlice";
 import ResponsiveAppBar from "./Navbar";
 import { api } from "../api";
-import checkConfirmOrder from "./CheckConfirmOrders/CheckConfirmOrders";
+import checkOrder from "./CheckConfirmOrders/CheckConfirmOrders";
 import Link from "@mui/material/Link";
 import { useNavigate, useNavigation } from "react-router-dom";
-
 
 const drawerWidth = 320;
 const leftDrawerWidth = 220;
@@ -87,7 +86,7 @@ export default function PersistentDrawerRight() {
     setOpen(false);
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const productDetail = useSelector((state) => state.product.cart);
   const userDetail = useSelector((state) => state.product.user);
   console.log("productDetail", productDetail);
@@ -176,15 +175,15 @@ export default function PersistentDrawerRight() {
         variant="permanent"
         anchor="left"
       >
+        {/* ---------------------------------CheckConfirmOrders----------------------------------- */}
 
-      {/* ---------------------------------CheckConfirmOrders----------------------------------- */}
-        
-        {/* <Link to="/CheckConfirmOrders" > */}
-          <Button onClick={() => navigate('/CheckConfirmOrders')} variant="outlined" >
-            Confirm order
-          </Button>
-        {/* </Link> */}
-        
+        <Button
+          onClick={() => navigate("/CheckConfirmOrders")}
+          variant="outlined"
+        >
+          My orders 
+        </Button>
+
         <Divider />
         <Toolbar />
         <List></List>

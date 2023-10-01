@@ -23,6 +23,7 @@ const productSlice = createSlice({
     },
     addProduct: (state, action) => {
       state.product = action.payload;
+      // console.log("abc", action.payload)
     },
     removeProduct: (state, action) => {
       const productId = action.payload.id;
@@ -58,11 +59,12 @@ const productSlice = createSlice({
       }
       console.log("state cart", existingProduct);
     },
-    confirmOrder: (state, action) => {
+    confirmOrder: (state) => {
       state.cart = [];
     },
     checkConfirmOrder: (state, action) => {
-     state.orders = action.payload;
+      console.log("state", action.payload);
+      state.orders = action.payload;
     },
   },
 });
@@ -74,5 +76,6 @@ export const {
   removeProduct,
   addToCart,
   confirmOrder,
+  checkConfirmOrder,
 } = productSlice.actions;
 export default productSlice.reducer;
